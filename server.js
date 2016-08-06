@@ -24,5 +24,5 @@
     require('./app/routes')(app);
 
     // listen (start app with node server.js) =============
-    app.listen(8080);
+    app.listen(port);
     console.log('Magic is happening on port' + port);
