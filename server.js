@@ -11,7 +11,7 @@
     var methodOverride = require('method-override');
 
     // load the configuration ====================
-    mongoose.connect(database.url);
+    mongoose.connect(process.env.MONGODB_URI);
 
     app.use(express.static(__dirname + '/public'));
     app.use(morgan('dev'));
