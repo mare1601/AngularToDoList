@@ -1,6 +1,6 @@
 angular.module('todoController', [])
 
-  .controller('mainController', function($scope, #http) {
+  .controller('mainController', function($scope, $http, Todos) {
     $scope.formData = {};
 
     // when landing on the page, get all todos and show them
