@@ -4,7 +4,7 @@ angular.module('todoServices', [])
 
   // super simple services
   // each function returns a promise object
-  .factor('Todos', function($http) {
+  .factory('Todos', function($http) {
     return {
       get : function() {
         return $http.get('/api/todos');
