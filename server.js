@@ -11,6 +11,7 @@
     var methodOverride = require('method-override');
     var stormpath = require('express-stormpath');
     var path = require('path');
+    var ObjectID = mongoose.ObjectID;
 
     // load the configuration ====================
     mongoose.connect(database.url);
@@ -22,6 +23,21 @@
     app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
     app.use(methodOverride());
     app.use(stormpath.init(app,{
+      postRegistrationHandler: function (account, req, res, next) {
+        var collection = database.get('loginauth');
+        var mongo_id = new ObjectID();
+        collection.insert( { _id: mongo_id } );
+        account.customData["mongo_id"] = mongo_id;
+        account.customData.save(function(err) {
+         if (err) {
+             console.log('Did not save user!!');
+             next(err);
+         } else {
+             console.log('Success! Data saved!');
+         }
+     });
+        next();
+    },
       web: {
         spa: {
           enabled: true,
@@ -29,6 +45,7 @@
         }
       }
     }));
+
 
     // load the routes
     require('./app/routes')(app);
