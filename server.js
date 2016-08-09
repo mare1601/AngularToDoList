@@ -6,9 +6,11 @@
     var mongoose  = require('mongoose');
     var port = process.env.PORT || 8080;
     var database = require('./config/database');
-      var morgan    = require('morgan')
+    var morgan    = require('morgan')
     var bodyParser = require('body-parser');
     var methodOverride = require('method-override');
+    var stormpath = require('express-stormpath');
+    var path = require('path');
 
     // load the configuration ====================
     mongoose.connect(database.url);
@@ -19,9 +21,21 @@
     app.use(bodyParser.json());
     app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
     app.use(methodOverride());
+    app.use(stormpath.init(app,{
+      web: {
+        spa: {
+          enabled: true,
+          view: path.join(__dirname, '..', 'client', 'index.html')
+        }
+      }
+    }));
 
     // load the routes
     require('./app/routes')(app);
+
+    app.on('stormpath.ready', function () {
+      console.log('Stormpath Ready');
+    });
 
     // listen (start app with node server.js) =============
     app.listen(8080);
