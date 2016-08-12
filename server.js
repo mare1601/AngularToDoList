@@ -2,16 +2,19 @@
 
     //set up ============================
     var express = require('express');
+    var stormpath = require('express-stormpath');
     var app     = express();
     var mongoose  = require('mongoose');
+    var mongo = require('mongodb');
     var port = process.env.PORT || 8080;
     var database = require('./config/database');
     var morgan    = require('morgan')
     var bodyParser = require('body-parser');
     var methodOverride = require('method-override');
-    var stormpath = require('express-stormpath');
     var path = require('path');
-    var ObjectID = mongoose.ObjectID;
+    var monk = require('monk');
+    var db = monk('localhost:8080/angulartodolist');
+    var ObjectID = mongo.ObjectID;
 
     // load the configuration ====================
     mongoose.connect(database.url);
@@ -23,8 +26,12 @@
     app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
     app.use(methodOverride());
     app.use(stormpath.init(app,{
+      postLogoutHandler: function (account, req, res, next) {
+        console.log('User', account.email, 'just logged out!');
+        next();
+      },
       postRegistrationHandler: function (account, req, res, next) {
-        var collection = database.get('loginauth');
+        var collection = db.get('loginauth');
         var mongo_id = new ObjectID();
         collection.insert( { _id: mongo_id } );
         account.customData["mongo_id"] = mongo_id;
@@ -38,15 +45,34 @@
      });
         next();
     },
+    enableForgotPassword: true,
+    expandCustomData: true,
       web: {
-        spa: {
+        register: {
+          nextUri: '/todo.html'
+        },
+        login: {
+          nextUri: '/todo.html'
+        },
+        logout: {
           enabled: true,
-          view: path.join(__dirname, '..', 'client', 'index.html')
+          uri: '/logout',
         }
-      }
+      },
+
     }));
 
+    app.use(function(req,res,next) {
+      req.db = db;
+      next();
+    });
+    app.get('/DriveBar', stormpath.groupsRequired(['DriveBar']), function(req, res) {
+      res.send('You are an admin!');
+    });
 
+    app.get('index.html', stormpath.loginRequired, function(req, res) {
+      res.send('If you can see this page, you must be logged into your account!');
+    });
     // load the routes
     require('./app/routes')(app);
 

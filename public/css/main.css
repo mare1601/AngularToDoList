@@ -1,0 +1,55 @@
+body, .container-fluid {
+  background-color: black;
+  color: lightgrey; }
+
+a, a:hover, a:visited, a:active {
+  text-decoration: none;
+  color: lightgrey; }
+
+h1 {
+  font-size: 4em;
+  padding: 75px;
+  padding-top: 100px;
+  text-align: center;
+  text-transform: uppercase;
+  color: grey;
+  font-family: 'Vast Shadow', cursive; }
+
+.spacing {
+  height: 50px; }
+
+.secrets {
+  position: fixed;
+  bottom: 0;
+  right: 0; }
+
+/* Carousel stylings */
+.carousel-inner {
+  height: 450px;
+  position: relative; }
+
+img {
+  position: absolute;
+  top: -199px; }
+  @media only screen and (min-width: 320px) and (max-width: 880px) {
+    img {
+      top: 0px; } }
+
+/* Menu Stylings */
+.drink-menu, .table, th {
+  text-align: center; }
+
+.table > tbody > tr > td {
+  border-color: black !important; }
+
+.table {
+  width: 60%;
+  margin: 0 auto; }
+  @media only screen and (min-width: 320px) and (max-width: 800px) {
+    .table {
+      width: 100%; } }
+
+td {
+  width: 50%; }
+
+/*# sourceMappingURL=main.css.map */
