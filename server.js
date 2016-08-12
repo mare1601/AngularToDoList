@@ -12,12 +12,10 @@
     var bodyParser = require('body-parser');
     var methodOverride = require('method-override');
     var path = require('path');
-    var monk = require('monk');
-    var db = monk('localhost:8080/angulartodolist');
     var ObjectID = mongo.ObjectID;
 
     // load the configuration ====================
-    mongoose.connect(database.url);
+    var db = mongoose.connect(database.url);
 
     app.use(express.static(__dirname + '/public'));
     app.use(morgan('dev'));
@@ -27,20 +25,22 @@
     app.use(methodOverride());
     app.use(stormpath.init(app,{
       postLogoutHandler: function (account, req, res, next) {
-        console.log('User', account.email, 'just logged out!');
+        console.log('User', account.fullName, 'just logged out!');
         next();
       },
       postRegistrationHandler: function (account, req, res, next) {
         var collection = db.get('loginauth');
         var mongo_id = new ObjectID();
-        collection.insert( { _id: mongo_id } );
+        //collection.insert( { _id: mongo_id } );
         account.customData["mongo_id"] = mongo_id;
-        account.customData.save(function(err) {
+        account.getCustomData(function(err, data) {
          if (err) {
-             console.log('Did not save user!!');
-             next(err);
+           console.log('Did not save user!!');
+           next(err);
          } else {
-             console.log('Success! Data saved!');
+           data.loginauth.mongo_id = mongo_id;
+           data.loginauth.save();
+           console.log('Success! Data saved!');
          }
      });
         next();
@@ -66,13 +66,7 @@
       req.db = db;
       next();
     });
-    app.get('/DriveBar', stormpath.groupsRequired(['DriveBar']), function(req, res) {
-      res.send('You are an admin!');
-    });
 
-    app.get('index.html', stormpath.loginRequired, function(req, res) {
-      res.send('If you can see this page, you must be logged into your account!');
-    });
     // load the routes
     require('./app/routes')(app);
 
