@@ -1,6 +1,7 @@
 body, .container-fluid {
   background-color: black;
-  color: lightgrey; }
+  color: lightgrey;
+  font-size: 18px; }
 
 a, a:hover, a:visited, a:active {
   text-decoration: none;
@@ -15,13 +16,26 @@ h1 {
   color: grey;
   font-family: 'Vast Shadow', cursive; }
 
-.spacing {
-  height: 50px; }
+h2 {
+  background-color: #1f1f2e;
+  text-align: center;
+  width: 70%;
+  margin: 20px auto;
+  padding: 20px;
+  border-top: 1px solid lightgrey;
+  border-bottom: 1px solid lightgrey; }
 
-.secrets {
-  position: fixed;
-  bottom: 0;
-  left: 0; }
+p {
+  text-align: center; }
+
+.backstory {
+  line-height: 2em;
+  width: 70%;
+  text-align: center;
+  margin: 0 auto; }
+
+.spacing {
+  height: 150px; }
 
 /* Carousel stylings */
 .carousel-inner {
@@ -37,10 +51,11 @@ img {
 
 /* Menu Stylings */
 .drink-menu, .table, th {
-  text-align: center; }
+  text-align: center;
+  border: 0px; }
 
-.table > tbody > tr > td {
-  border-color: black !important; }
+.table > tbody > tr > td, .table > thead > tr > th {
+  border: 0px; }
 
 .table {
   width: 60%;
@@ -51,5 +66,17 @@ img {
 
 td {
   width: 50%; }
+
+.social-media {
+  text-align: center;
+  font-size: 3em; }
+
+.fa {
+  margin: 20px; }
+
+.secrets {
+  position: fixed;
+  bottom: 20px;
+  left: 20px; }
 
 /*# sourceMappingURL=main.css.map */
