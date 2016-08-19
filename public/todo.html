@@ -22,11 +22,16 @@
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
   <script src="js/angular-ui-router.min.js"></script>
   <script src="js/controllers/main.js"></script>
+  <script src="js/controllers/access.js"></script><!--load our access service -->
   <script src="js/services/todos.js"></script> <!-- load our todo service -->
   <script src="js/core.js"></script> <!-- load our main application -->
+  <script src="js/services/stormpath-sdk-angularjs.min.js"></script>
+  <script src="js/services/stormpath-sdk-angularjs.tpls.min.js"></script>
+
 </head>
 
 <body ng-controller="mainController">
+  <li if-user-in-group="'DriveBar'">Hi {{ user.fullName }}!</li>
   <div class="container">
 
     <!--Header and todo count -->
@@ -62,10 +67,12 @@
         </form>
       </div>
     </div>
-  </div>
   <!-- Logout section for Stormpath logout -->
   <form action="/logout" method="post">
     <input type="submit" value="Logout">
   </form>
+
+</div>
+
 </body>
 </html>

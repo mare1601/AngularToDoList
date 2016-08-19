@@ -11,7 +11,7 @@
     var morgan    = require('morgan')
     var bodyParser = require('body-parser');
     var methodOverride = require('method-override');
-    var path = require('path');
+    //var path = require('path');
     var ObjectID = mongo.ObjectID;
 
     // load the configuration ====================
@@ -26,33 +26,20 @@
     app.use(stormpath.init(app,{
       postLogoutHandler: function (account, req, res, next) {
         console.log('User', account.fullName, 'just logged out!');
+        console.log(account.customData);
         next();
       },
-      postRegistrationHandler: function (account, req, res, next) {
-        var collection = db.get('loginauth');
-        var mongo_id = new ObjectID();
-        //collection.insert( { _id: mongo_id } );
-        account.customData["mongo_id"] = mongo_id;
-        account.getCustomData(function(err, data) {
-         if (err) {
-           console.log('Did not save user!!');
-           next(err);
-         } else {
-           data.loginauth.mongo_id = mongo_id;
-           data.loginauth.save();
-           console.log('Success! Data saved!');
-         }
-     });
-        next();
-    },
-    enableForgotPassword: true,
-    expandCustomData: true,
+      enableForgotPassword: true,
+      expand: {
+        customData: true
+      },
       web: {
+        //produces: ['application/json'],
         register: {
-          nextUri: '/todo.html'
+          nextUri: '/login.html'
         },
         login: {
-          nextUri: '/todo.html'
+            nextUri: '/todo.html'
         },
         logout: {
           enabled: true,
@@ -61,7 +48,6 @@
       },
 
     }));
-
     app.use(function(req,res,next) {
       req.db = db;
       next();

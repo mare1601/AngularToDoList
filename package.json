@@ -12,7 +12,6 @@
     "mongoose": "^4.4.12",
     "morgan": "^1.1.1",
     "stormpath-sdk-angular": "latest",
-    "mongodb" : "latest",
-    "monk" : "latest"
+    "mongodb" : "latest"    
   }
 }

@@ -1,4 +1,7 @@
 angular.module('scotchTodo', [
   'todoController',
-  'todoServices'
+  'todoServices',
+  'todoAccess',
+  'stormpath',
+  'stormpath.templates'
 ]);
