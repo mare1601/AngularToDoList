@@ -26,20 +26,35 @@
     app.use(stormpath.init(app,{
       postLogoutHandler: function (account, req, res, next) {
         console.log('User', account.fullName, 'just logged out!');
-        console.log(account.customData);
+        account.getCustomData(function(err, customData) {
+            if(customData.group === 'DriveBar'){
+              console.log('winning');
+            };
+        });
+        next();
+      },
+      postLoginHandler: function (account, req, res, next) {
+        account.getCustomData(function(err, customData) {
+          if(customData.group === 'DriveBar'){
+            nextUri: '/todo.html'
+          }
+          else {
+            nextUri: 'index.html'
+          };
+        });
         next();
       },
       enableForgotPassword: true,
-      expand: {
-        customData: true
-      },
       web: {
-        //produces: ['application/json'],
+        me: {
+          expand: {
+            customData: true
+          }
+        },
         register: {
           nextUri: '/login.html'
         },
         login: {
-            nextUri: '/todo.html'
         },
         logout: {
           enabled: true,
